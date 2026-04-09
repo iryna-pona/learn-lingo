@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getTeachers } from "@/lib/firebase/db";
 import { Teacher } from "@/types/teacher";
 import { TeacherCard } from "@/components/TeacherCard/TeacherCard";
-import css from "./TeachersPage.module.css";
+import styles from "./TeachersPage.module.css";
 
 export default function TeachersPage() {
   const [allTeachers, setAllTeachers] = useState<(Teacher & { id: string })[]>([]);
