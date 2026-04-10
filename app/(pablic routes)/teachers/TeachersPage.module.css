@@ -1,0 +1,42 @@
+.container {
+    width: 100%;
+    padding: 0 128px;
+    margin: 0 auto;
+}
+
+.page {
+    padding: 16px;
+    width: 100%;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 16px;
+}
+
+.button {
+    margin-top: 16px;
+    padding: 10px 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.button:hover {
+    background-color: #2563eb;
+}
+
+.message {
+    padding: 20px;
+    font-size: 18px;
+}
+
+.error {
+    padding: 20px;
+    color: red;
+    font-weight: 500;
+}

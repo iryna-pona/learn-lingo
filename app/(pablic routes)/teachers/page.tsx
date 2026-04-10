@@ -10,15 +10,39 @@ export default function TeachersPage() {
   const [allTeachers, setAllTeachers] = useState<(Teacher & { id: string })[]>([]);
   const [visibleTeachers, setVisibleTeachers] = useState<(Teacher & { id: string })[]>([]);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const perPage = 4;
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchTeachers = async () => {
-      const data = await getTeachers();
-      setAllTeachers(data);
-      setVisibleTeachers(data.slice(0, perPage));
+      try {
+        setLoading(true);
+        const data = await getTeachers();
+
+        if (!isMounted) return;
+
+        setAllTeachers(data);
+        setVisibleTeachers(data.slice(0, perPage));
+      } catch (err) {
+        console.error(err);
+        if (isMounted) {
+          setError("Something went wrong while loading teachers");
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
     };
     fetchTeachers();
+
+    return () => {
+      isMounted = false
+    };
   }, []);
 
   const loadMore = () => {
@@ -27,22 +51,31 @@ export default function TeachersPage() {
     setPage(nextPage);
   };
 
+  if (loading) {
+    return <p className={styles.message}>Loading...</p>;
+  }
+
+  if (error) {
+    return <p className={styles.error}>{error}</p>;
+  }
+
   return (
-    <div className="teachers-page p-4">
-      <h1 className="text-2xl font-bold mb-4">Teachers</h1>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="container">
+    <div className={styles.page}>
+      <div className={styles.grid}>
         {visibleTeachers.map((teacher) => (
           <TeacherCard key={teacher.id} teacher={teacher} />
         ))}
       </div>
       {visibleTeachers.length < allTeachers.length && (
         <button
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+          className={styles.button}
           onClick={loadMore}
         >
           Load more
         </button>
       )}
-    </div>
+      </div>
+      </div>
   );
 }

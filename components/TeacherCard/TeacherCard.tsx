@@ -10,6 +10,7 @@ interface Props {
 }
 
 export const TeacherCard: React.FC<Props> = ({ teacher, onFavoriteClick, isFavorite }) => (
+  <div className="container">
   <div className={styles.card}>
     <div className={styles.avatarBox}>
       <Image
@@ -22,28 +23,42 @@ export const TeacherCard: React.FC<Props> = ({ teacher, onFavoriteClick, isFavor
 
     <div className={styles.contentBox}>
       <div className={styles.cardHeader}>
-        <p className={styles.text}>Languages</p>
+        <p className={styles.text}><span className={styles.label}>Languages</span></p>
         <div className={styles.cardHeaderWrap}>
-          <p className={styles.text}>Lessons online</p>
-          <p className={styles.text}>Lessons done: {teacher.lessons_done}</p>
-          <p className={styles.text}>Rating: {teacher.rating}</p>
-          <p className={styles.text}>Prise / 1 hour: {teacher.price_per_hour}</p>
-          <button
-            className={`favorite-btn ${isFavorite ? "text-red-500" : "text-gray-400"}`}
-            onClick={onFavoriteClick}
-          >
-            ❤️
-          </button>
+          <span className={styles.item}>Lessons online</span>
+          <span className={styles.item}>Lessons done: {teacher.lessons_done}</span>
+          <span className={styles.item}>Rating: {teacher.rating}</span>
+          <span className={styles.item}>
+            Price / 1 hour:{" "}
+            <span className={styles.price}>{teacher.price_per_hour}$</span>
+          </span>
         </div>
+        <button
+          className={`favorite-btn ${isFavorite ? "text-red-500" : "text-gray-400"}`}
+          onClick={onFavoriteClick}
+        >
+          ❤️
+        </button>
       </div>
       <h2 className={styles.title}>{teacher.name} {teacher.surname}</h2>
-      <p className={styles.text}>Speaks: {teacher.languages}</p>
-      <p className={styles.text}>Lesson info: {teacher.lesson_info}</p>
-      <p className={styles.text}>Conditions: {teacher.conditions}</p>
+      <p className={styles.text}>
+        <span className={styles.label}>Speaks: </span>
+        <span className={styles.value}>
+          {teacher.languages.join(", ")}
+        </span>
+      </p>
+      <p className={styles.text}>
+        <span className={styles.label}>Lesson info: </span>
+        <span className={styles.value}>{teacher.lesson_info}</span></p>
+      <p className={styles.text}>
+        <span className={styles.label}>Conditions: </span>
+        <span className={styles.value}>{teacher.conditions}</span>
+      </p>
 
       <Link href={`/teachers/${teacher.id}`} className={styles.readMoreBtn}>Read more</Link>
       
       <p className={styles.levels}>{teacher.levels}</p>
     </div>
-  </div>
+    </div>
+    </div>
 );

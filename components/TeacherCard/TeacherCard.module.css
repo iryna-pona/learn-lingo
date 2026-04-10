@@ -1,0 +1,60 @@
+.card {
+    display: flex;
+    flex-direction: row;
+    gap: 48px;
+    width: 100%;
+}
+
+.avatarBox {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.contentBox {
+    width: 100%;
+}
+
+.text {
+    font-size: 14px;
+    color: #000;
+}
+
+.label {
+    color: #8a8a8a;
+}
+
+.value {
+    color: #000000;
+}
+
+.price {
+    color: #4caf50;
+    font-weight: 600;
+}
+
+.cardHeader {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+}
+
+.cardHeaderWrap {
+    display: flex;
+    margin-left: auto;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.item {
+    font-size: 14px;
+    color: #333;
+}
+
+.item:not(:last-child)::after {
+    content: " |";
+    color: #c4c4c4;
+    margin-left: 8px;
+}
