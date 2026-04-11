@@ -4,7 +4,12 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   images: {
-    domains: ["ftp.goit.study"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ftp.goit.study",
+      },
+    ],
   },
 };
 

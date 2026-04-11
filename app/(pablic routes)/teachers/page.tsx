@@ -7,48 +7,52 @@ import { TeacherCard } from "@/components/TeacherCard/TeacherCard";
 import styles from "./TeachersPage.module.css";
 
 export default function TeachersPage() {
-  const [allTeachers, setAllTeachers] = useState<(Teacher & { id: string })[]>([]);
-  const [visibleTeachers, setVisibleTeachers] = useState<(Teacher & { id: string })[]>([]);
-  const [page, setPage] = useState(1);
+  const [teachers, setTeachers] = useState<(Teacher & { id: string })[]>([]);
+  const [lastKey, setLastKey] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const perPage = 4;
 
   useEffect(() => {
-    let isMounted = true;
-
-    const fetchTeachers = async () => {
+    const fetchFirst = async () => {
       try {
         setLoading(true);
-        const data = await getTeachers();
 
-        if (!isMounted) return;
+        const res = await getTeachers(perPage);
 
-        setAllTeachers(data);
-        setVisibleTeachers(data.slice(0, perPage));
+        setTeachers(res.data);
+        setLastKey(res.lastKey);
+
       } catch (err) {
         console.error(err);
-        if (isMounted) {
-          setError("Something went wrong while loading teachers");
-        }
+        setError("Something went wrong while loading teachers");
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
-    fetchTeachers();
 
-    return () => {
-      isMounted = false
-    };
+    fetchFirst();
   }, []);
 
-  const loadMore = () => {
-    const nextPage = page + 1;
-    setVisibleTeachers(allTeachers.slice(0, nextPage * perPage));
-    setPage(nextPage);
+  const loadMore = async () => {
+    if (!lastKey) return;
+
+    try {
+      setLoadingMore(true);
+
+      const res = await getTeachers(perPage, lastKey);
+
+      setTeachers(prev => [...prev, ...res.data]);
+      setLastKey(res.lastKey);
+
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load more teachers");
+    } finally {
+      setLoadingMore(false);
+    }
   };
 
   if (loading) {
@@ -60,22 +64,28 @@ export default function TeachersPage() {
   }
 
   return (
-    <div className="container">
-    <div className={styles.page}>
-      <div className={styles.grid}>
-        {visibleTeachers.map((teacher) => (
-          <TeacherCard key={teacher.id} teacher={teacher} />
-        ))}
+    <div className={styles.section}>
+      <div className={styles.container}>
+        <div className={styles.pageWrapper}>
+
+          <div className={styles.gridBox}>
+            {teachers.map((teacher) => (
+              <TeacherCard key={teacher.id} teacher={teacher} />
+            ))}
+          </div>
+
+          {lastKey && (
+            <button
+              className={styles.loadMoreBtn}
+              onClick={loadMore}
+              disabled={loadingMore}
+            >
+              {loadingMore ? "Loading..." : "Load more"}
+            </button>
+          )}
+
+        </div>
       </div>
-      {visibleTeachers.length < allTeachers.length && (
-        <button
-          className={styles.button}
-          onClick={loadMore}
-        >
-          Load more
-        </button>
-      )}
-      </div>
-      </div>
+    </div>
   );
 }

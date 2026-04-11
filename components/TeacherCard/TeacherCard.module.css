@@ -3,48 +3,105 @@
     flex-direction: row;
     gap: 48px;
     width: 100%;
+    padding: 24px;
 }
 
 .avatarBox {
+    width: 120px;
+    height: 120px;
+    aspect-ratio: 1 / 1;
+    border: 3px solid #fbe9ba;
+    border-radius: 50%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+.avatarInner {
     width: 96px;
     height: 96px;
     border-radius: 50%;
     overflow: hidden;
 }
 
+.avatar {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+}
+
+.status {
+    position: absolute;
+    z-index: 1000;
+    top: 18px;
+    right: 18px;
+
+    width: 10px;
+    height: 10px;
+    background-color: #4caf50;
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
 .contentBox {
     width: 100%;
 }
 
+.title {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 100%;
+    color: #121417;
+    padding-bottom: 32px;
+}
+
 .text {
+    font-weight: 500;
     font-size: 14px;
-    color: #000;
+    line-height: 114%;
+    color: #121417;
 }
 
 .label {
-    color: #8a8a8a;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 150%;
+    color: #8a8a89;
+    margin-bottom: 8px;
 }
 
 .value {
-    color: #000000;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 150%;
+    color: #121417;
+    margin-bottom: 8px;
 }
 
 .price {
-    color: #4caf50;
     font-weight: 600;
+    font-size: 16px;
+    line-height: 150%;
+    color: #38cd3e;
 }
 
 .cardHeader {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 8px;
     width: 100%;
+    margin-bottom: 8px;
 }
 
 .cardHeaderWrap {
     display: flex;
     margin-left: auto;
     flex-wrap: wrap;
+    align-items: center;
     gap: 8px;
 }
 
@@ -57,4 +114,42 @@
     content: " |";
     color: #c4c4c4;
     margin-left: 8px;
+}
+
+.readMoreBtn {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 150%;
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    color: #121417;
+    padding-top: 16px;
+    padding-bottom: 32px;
+}
+
+.levels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.level {
+    border: 1px solid rgba(18, 20, 23, 0.2);
+    padding: 8px 12px;
+    border-radius: 35px;
+    color: #121417;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 114%;
+    cursor: default;
+    transition: all 0.2s ease;
+}
+
+.level:hover {
+    background-color: #e5e7eb;
+}
+
+.active {
+    background-color:#f4c550;
 }

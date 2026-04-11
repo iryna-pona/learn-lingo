@@ -10,15 +10,18 @@ interface Props {
 }
 
 export const TeacherCard: React.FC<Props> = ({ teacher, onFavoriteClick, isFavorite }) => (
-  <div className="container">
+
   <div className={styles.card}>
-    <div className={styles.avatarBox}>
-      <Image
-        src={teacher.avatar_url}
-        alt={`${teacher.name} ${teacher.surname}`}
-        width={96}
-        height={96}
-        className={styles.avatarImg} />
+      <div className={styles.avatarBox}>
+        <div className={styles.avatarInner}>
+          <Image
+            src={teacher.avatar_url}
+            alt={`${teacher.name} ${teacher.surname}`}
+            width={96}
+            height={96}
+            className={styles.avatarImg} />
+        </div>
+        <div className={styles.status}></div>
     </div>
 
     <div className={styles.contentBox}>
@@ -57,8 +60,20 @@ export const TeacherCard: React.FC<Props> = ({ teacher, onFavoriteClick, isFavor
 
       <Link href={`/teachers/${teacher.id}`} className={styles.readMoreBtn}>Read more</Link>
       
-      <p className={styles.levels}>{teacher.levels}</p>
+      <div className={styles.levels}>
+        {teacher.levels.map((level, index) => (
+          <span
+            key={level}
+            className={
+              index === 0
+                ? `${styles.level} ${styles.active}`
+                : styles.level
+            }
+          >
+            {level}
+          </span>
+        ))}
+      </div>
     </div>
-    </div>
-    </div>
+  </div>
 );

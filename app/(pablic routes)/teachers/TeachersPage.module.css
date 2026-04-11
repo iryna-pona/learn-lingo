@@ -1,33 +1,53 @@
+.section {
+    padding: 96px 0;
+}
+
 .container {
     width: 100%;
     padding: 0 128px;
     margin: 0 auto;
 }
 
-.page {
+.pageWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 16px;
     width: 100%;
 }
 
-.grid {
+.gridBox {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 16px;
+    margin-bottom: 64px;
 }
 
-.button {
-    margin-top: 16px;
-    padding: 10px 16px;
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 6px;
+.loadMoreBtn {
+    margin: 0 auto;
+    height: 60px;
+    padding: 16px 48px;
+    background-color: #f4c550;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 156%;
+    color: #121417;
+    border: 2px solid transparent;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.3s ease;
 }
 
-.button:hover {
-    background-color: #2563eb;
+.loadMoreBtn:hover {
+    background-color: #ffdc86;
+    border: 2px solid #f4c550;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(244, 197, 80, 0.35);
+}
+
+.loadMoreBtn:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 3px 10px rgba(244, 197, 80, 0.25);
 }
 
 .message {
