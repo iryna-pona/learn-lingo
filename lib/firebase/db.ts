@@ -1,5 +1,5 @@
 import { database } from "./firebase";
-import { ref, get, query, orderByKey, limitToFirst, startAfter } from "firebase/database";
+import { ref, set, remove, get, query, orderByKey, limitToFirst, startAfter } from "firebase/database";
 import { Teacher } from "@/types/teacher";
 
 export const getTeachers = async (
@@ -46,4 +46,20 @@ export const getTeachers = async (
     data,
     lastKey: lastKeyResult,
   };
+};
+
+export const addFavorite = async (userId: string, teacherId: string) => {
+  await set(ref(database, `users/${userId}/favorites/${teacherId}`), true);
+};
+
+export const removeFavorite = async (userId: string, teacherId: string) => {
+  await remove(ref(database, `users/${userId}/favorites/${teacherId}`));
+};
+
+export const getFavorites = async (userId: string): Promise<string[]> => {
+  const snapshot = await get(ref(database, `users/${userId}/favorites`));
+
+  if (!snapshot.exists()) return [];
+
+  return Object.keys(snapshot.val());
 };

@@ -32,15 +32,24 @@ export const TeacherCard: React.FC<Props> = ({ teacher, onFavoriteClick, isFavor
           <span className={styles.item}>Lessons done: {teacher.lessons_done}</span>
           <span className={styles.item}>Rating: {teacher.rating}</span>
           <span className={styles.item}>
-            Price / 1 hour:{" "}
+            Price / 1 hour: 
             <span className={styles.price}>{teacher.price_per_hour}$</span>
           </span>
         </div>
         <button
-          className={`favorite-btn ${isFavorite ? "text-red-500" : "text-gray-400"}`}
+          className={styles.favoriteBtn}
           onClick={onFavoriteClick}
         >
-          ❤️
+          <Image
+            src={
+              isFavorite
+                ? "/favorites/favorites.svg"
+                : "/favorites/notFavorites.svg"
+            }
+            alt="favorite"
+            width={24}
+            height={24}
+          />
         </button>
       </div>
       <h2 className={styles.title}>{teacher.name} {teacher.surname}</h2>
