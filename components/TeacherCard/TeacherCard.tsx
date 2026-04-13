@@ -9,37 +9,60 @@ interface Props {
   isFavorite?: boolean;
 }
 
-export const TeacherCard: React.FC<Props> = ({ teacher, onFavoriteClick, isFavorite }) => (
-
+export const TeacherCard: React.FC<Props> = ({
+  teacher,
+  onFavoriteClick,
+  isFavorite,
+}) => (
   <div className={styles.card}>
-      <div className={styles.avatarBox}>
-        <div className={styles.avatarInner}>
-          <Image
-            src={teacher.avatar_url}
-            alt={`${teacher.name} ${teacher.surname}`}
-            width={96}
-            height={96}
-            className={styles.avatarImg} />
-        </div>
-        <div className={styles.status}></div>
+    <div className={styles.avatarBox}>
+      <div className={styles.avatarInner}>
+        <Image
+          src={teacher.avatar_url}
+          alt={`${teacher.name} ${teacher.surname}`}
+          width={96}
+          height={96}
+          className={styles.avatarImg}
+        />
+      </div>
+      <div className={styles.status}></div>
     </div>
 
     <div className={styles.contentBox}>
       <div className={styles.cardHeader}>
-        <p className={styles.text}><span className={styles.label}>Languages</span></p>
+        <p className={styles.text}>
+          <span className={styles.label}>Languages</span>
+        </p>
         <div className={styles.cardHeaderWrap}>
-          <span className={styles.item}>Lessons online</span>
-          <span className={styles.item}>Lessons done: {teacher.lessons_done}</span>
-          <span className={styles.item}>Rating: {teacher.rating}</span>
           <span className={styles.item}>
-            Price / 1 hour: 
+            <span className={styles.iconGroup}>
+              <Image src="/icons/bookL.svg" alt="book" width={9} height={14} />
+              <Image src="/icons/bookR.svg" alt="book" width={9} height={14} />
+            </span>
+            Lessons online
+          </span>
+
+          <span className={styles.item}>
+            Lessons done: {teacher.lessons_done}
+          </span>
+
+          <span className={styles.item}>
+            <Image
+              src="/icons/star.svg"
+              alt="star"
+              width={16}
+              height={16}
+              className={styles.icon}
+            />
+            Rating: {teacher.rating}
+          </span>
+
+          <span className={styles.item}>
+            Price / 1 hour:
             <span className={styles.price}>{teacher.price_per_hour}$</span>
           </span>
         </div>
-        <button
-          className={styles.favoriteBtn}
-          onClick={onFavoriteClick}
-        >
+        <button className={styles.favoriteBtn} onClick={onFavoriteClick}>
           <Image
             src={
               isFavorite
@@ -52,31 +75,32 @@ export const TeacherCard: React.FC<Props> = ({ teacher, onFavoriteClick, isFavor
           />
         </button>
       </div>
-      <h2 className={styles.title}>{teacher.name} {teacher.surname}</h2>
+      <h2 className={styles.title}>
+        {teacher.name} {teacher.surname}
+      </h2>
       <p className={styles.text}>
         <span className={styles.label}>Speaks: </span>
-        <span className={styles.value}>
-          {teacher.languages.join(", ")}
-        </span>
+        <span className={styles.value}>{teacher.languages.join(", ")}</span>
       </p>
       <p className={styles.text}>
         <span className={styles.label}>Lesson info: </span>
-        <span className={styles.value}>{teacher.lesson_info}</span></p>
+        <span className={styles.value}>{teacher.lesson_info}</span>
+      </p>
       <p className={styles.text}>
         <span className={styles.label}>Conditions: </span>
         <span className={styles.value}>{teacher.conditions}</span>
       </p>
 
-      <Link href={`/teachers/${teacher.id}`} className={styles.readMoreBtn}>Read more</Link>
-      
+      <Link href={`/teachers/${teacher.id}`} className={styles.readMoreBtn}>
+        Read more
+      </Link>
+
       <div className={styles.levels}>
         {teacher.levels.map((level, index) => (
           <span
             key={level}
             className={
-              index === 0
-                ? `${styles.level} ${styles.active}`
-                : styles.level
+              index === 0 ? `${styles.level} ${styles.active}` : styles.level
             }
           >
             {level}

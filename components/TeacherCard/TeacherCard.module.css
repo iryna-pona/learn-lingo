@@ -1,179 +1,194 @@
 .card {
-    display: flex;
-    flex-direction: row;
-    gap: 48px;
-    width: 100%;
-    padding: 24px;
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+  width: 100%;
+  padding: 24px;
 }
 
 .avatarBox {
-    width: 120px;
-    height: 120px;
-    aspect-ratio: 1 / 1;
-    border: 3px solid #fbe9ba;
-    border-radius: 50%;
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 120px;
+  height: 120px;
+  aspect-ratio: 1 / 1;
+  border: 3px solid #fbe9ba;
+  border-radius: 50%;
 
-    position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
 }
 
 .avatarInner {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    overflow: hidden;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .avatar {
-    width: 96px;
-    height: 96px;
-    object-fit: cover;
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
 }
 
 .status {
-    position: absolute;
-    z-index: 1000;
-    top: 18px;
-    right: 18px;
+  position: absolute;
+  z-index: 1000;
+  top: 18px;
+  right: 18px;
 
-    width: 10px;
-    height: 10px;
-    background-color: #38cd3e;
-    border: 2px solid white;
-    border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: #38cd3e;
+  border: 2px solid white;
+  border-radius: 50%;
 }
 
 .contentBox {
-    width: 100%;
+  width: 100%;
 }
 
 .title {
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 100%;
-    color: #121417;
-    padding-bottom: 32px;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  color: #121417;
+  padding-bottom: 32px;
 }
 
 .text {
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 114%;
-    color: #121417;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 114%;
+  color: #121417;
 }
 
 .label {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 150%;
-    color: #8a8a89;
-    margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  color: #8a8a89;
+  margin-bottom: 8px;
 }
 
 .value {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 150%;
-    color: #121417;
-    margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  color: #121417;
+  margin-bottom: 8px;
 }
 
 .price {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 150%;
-    color: #38cd3e;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  color: #38cd3e;
 }
 
 .cardHeader {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    margin-bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 8px;
 }
 
 .cardHeaderWrap {
-    display: flex;
-    margin-left: auto;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  margin-left: auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
 .item {
-    font-size: 14px;
-    color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #333;
 }
 
 .item:not(:last-child)::after {
-    content: " |";
-    color: #c4c4c4;
-    margin-left: 8px;
+  content: " |";
+  color: #c4c4c4;
+  margin-left: 8px;
+}
+
+.iconGroup {
+  display: flex;
+}
+
+.iconGroup > :last-child {
+  margin-left: -2px;
+}
+
+.icon {
+  display: block;
 }
 
 .favoriteBtn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    padding: 6px;
-    border-radius: 50%;
+  padding: 6px;
+  border-radius: 50%;
 
-    transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .favoriteBtn:hover {
-    transform: scale(1.1);
-    opacity: 0.8;
+  transform: scale(1.1);
+  opacity: 0.8;
 }
 
 .favoriteBtn:active {
-    transform: scale(0.95);
+  transform: scale(0.95);
 }
 
 .readMoreBtn {
-    display: inline-block;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 150%;
-    text-decoration: underline;
-    text-decoration-skip-ink: none;
-    color: #121417;
-    padding-top: 16px;
-    padding-bottom: 32px;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: #121417;
+  padding-top: 16px;
+  padding-bottom: 32px;
 }
 
 .levels {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .level {
-    border: 1px solid rgba(18, 20, 23, 0.2);
-    padding: 8px 12px;
-    border-radius: 35px;
-    color: #121417;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 114%;
-    cursor: default;
-    transition: all 0.2s ease;
+  border: 1px solid rgba(18, 20, 23, 0.2);
+  padding: 8px 12px;
+  border-radius: 35px;
+  color: #121417;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 114%;
+  cursor: default;
+  transition: all 0.2s ease;
 }
 
 .level:hover {
-    background-color: #e5e7eb;
+  background-color: #e5e7eb;
 }
 
 .active {
-    background-color:#f4c550;
+  background-color: #f4c550;
 }
