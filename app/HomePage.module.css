@@ -1,0 +1,136 @@
+.conteiner {
+  padding: 0 64px;
+}
+
+.sectionHome {
+  padding: 0 0 23px 0;
+}
+
+.pageHome {
+  min-height: calc(100vh - 80px);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
+  gap: 24px;
+}
+
+.infoBloсk {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 98px 64px;
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  background-color: #f8f8f8;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 46px;
+  line-height: 1.16667;
+  letter-spacing: -0.02em;
+  color: #121417;
+}
+
+.titleSpan {
+  color: #111;
+  background: #fbe9ba;
+  border-radius: 8px;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.375;
+  letter-spacing: -0.02em;
+  color: #121417;
+  margin-top: 32px;
+  margin-bottom: 64px;
+}
+
+.linkBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0px;
+  width: 267px;
+  height: 60px;
+  border-radius: 12px;
+  padding: 16px 80px;
+  background: #f4c550;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.55556;
+  color: #121417;
+}
+
+.imageBloсk {
+  grid-column: 2;
+  grid-row: 1;
+  position: relative;
+  border-radius: 30px;
+  background: #fbe9ba;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.girl {
+  position: absolute;
+  bottom: 111px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.mac {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.futerHome {
+  grid-column: 1 / span 2;
+  grid-row: 2;
+  border: 1.50px dashed #f4c550;
+  border-radius: 30px;
+  width: 100%;
+  height: 100%;
+  padding: 40px 123px;
+}
+
+.stats {
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+  list-style: none;
+}
+
+.items {
+  display: flex;
+  gap: 16px;
+}
+
+.value {
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 114%;
+  letter-spacing: -0.02em;
+  color: #121417;
+}
+
+.label {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 129%;
+  letter-spacing: -0.02em;
+  color: rgba(18, 20, 23, 0.7);
+}
