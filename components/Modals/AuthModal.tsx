@@ -12,6 +12,7 @@ type AuthMode = "login" | "register";
 interface Props {
   mode: AuthMode; // режим модалки
   onClose: () => void; // функція закриття модалки
+  isOpen: boolean;
 }
 
 interface FormData {
@@ -20,7 +21,7 @@ interface FormData {
   password: string;
 }
 
-export const AuthModal = ({ mode, onClose }: Props) => {
+export const AuthModal = ({ mode, onClose, isOpen }: Props) => {
   const {
     register,
     handleSubmit,
@@ -42,8 +43,8 @@ export const AuthModal = ({ mode, onClose }: Props) => {
 
   // Очистка форми при закритті
   useEffect(() => {
-    reset();
-  }, [reset]);
+    if (!isOpen) reset();
+  }, [isOpen, reset]);
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -61,7 +62,9 @@ export const AuthModal = ({ mode, onClose }: Props) => {
   };
 
   return (
-    <div className={styles.backdrop} onClick={onClose}>
+    <div className={`${styles.backdrop} ${isOpen ? styles.show : ""}`}
+      onClick={onClose}
+    >
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <button className={styles.closeBtn} onClick={onClose}>✖</button>
 
