@@ -78,7 +78,11 @@ export const AuthModal = ({ mode, onClose, isOpen }: Props) => {
             : "Thank you for your interest! Please provide the information below to register."}
         </p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={styles.form}
+          autoComplete="off"
+        >
           {mode === "register" && (
             <div>
               <input
@@ -94,7 +98,8 @@ export const AuthModal = ({ mode, onClose, isOpen }: Props) => {
           <div>
             <input
               type="email"
-              placeholder="Email"
+              placeholder="Email*"
+              autoComplete="new-email"
               className={`${styles.input} ${errors.email ? styles.inputError : ""}`}
               {...register("email")}
             />
@@ -104,7 +109,8 @@ export const AuthModal = ({ mode, onClose, isOpen }: Props) => {
           <div>
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Password*"
+              autoComplete="new-password"
               className={`${styles.input} ${errors.password ? styles.inputError : ""}`}
               {...register("password")}
             />
