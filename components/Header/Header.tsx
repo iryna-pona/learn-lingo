@@ -2,18 +2,20 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { usePathname } from "next/navigation";
-import { AuthModal } from "@/components/Modals/AuthModal";
+import { useRouter, usePathname } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+import { logoutUser } from "@/lib/firebase/auth";
 import styles from "./Header.module.css";
 
 export const Header = () => {
-  const [authMode, setAuthMode] = useState<"login" | "register" | null>(null);
+  const { user } = useAuth();
+  const router = useRouter();
   const pathname = usePathname();
 
-  const openLogin = () => setAuthMode("login");
-  const openRegister = () => setAuthMode("register");
-  const closeModal = () => setAuthMode(null);
+  const handleLogout = async () => {
+    await logoutUser();
+    router.push("/");
+  };
 
   return (
     <header className={styles.header}>
@@ -48,30 +50,44 @@ export const Header = () => {
           >
             Teachers
           </Link>
+
+          {user && (
+            <Link
+              href="/favorites"
+              className={`${styles.link} ${pathname === "/favorites" ? styles.active : ""}`}
+            >
+              Favorites
+            </Link>
+          )}
         </nav>  
       </div>
       <div className={styles.actions}>
-        <button onClick={openLogin} className={styles.loginBtn}>
-          <div className={styles.loginIcon}>
-            <Image
-              src="/login/arrow.svg"
-              alt=""
-              width={12}
-              height={11}
-            />
-            <Image
-              src="/login/bracket.svg"
-              alt=""
-              width={7}
-              height={17}
-            />
-          </div>
-          <span>Log in</span>
-        </button>
-        <button onClick={openRegister} className={styles.regBtn}>Registration</button>
-      </div>
+        {user ? (
+          <button onClick={handleLogout} className={styles.logoutBtn}>
+            Logout
+          </button>
+        ) : (
+          <>
+            <button
+              onClick={() => router.push("/login")}
+              className={styles.loginBtn}
+            >
+              <div className={styles.loginIcon}>
+                <Image src="/login/arrow.svg" alt="" width={12} height={11} />
+                <Image src="/login/bracket.svg" alt="" width={7} height={17} />
+              </div>
+              <span>Log in</span>
+            </button>
 
-      {authMode && <AuthModal mode={authMode} onClose={closeModal} isOpen={!!authMode} />}
+            <button
+              onClick={() => router.push("/login?mode=register")}
+              className={styles.regBtn}
+            >
+              Registration
+            </button>
+          </>
+        )}
+      </div>
     </header>
   );
 };
