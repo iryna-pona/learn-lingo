@@ -5,14 +5,17 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema, registerSchema } from "./validationSchemas";
 import { loginUser, registerUser } from "@/lib/firebase/auth";
+import { useRouter } from "next/navigation";
 import styles from "./AuthModal.module.css";
 
 type AuthMode = "login" | "register";
 
 interface Props {
-  mode: AuthMode; // режим модалки
-  onClose: () => void; // функція закриття модалки
+  mode: AuthMode;
+  onClose: () => void;
   isOpen: boolean;
+  onSwitchMode?: () => void;
+  redirectTo?: string;
 }
 
 interface FormData {
@@ -21,7 +24,15 @@ interface FormData {
   password: string;
 }
 
-export const AuthModal = ({ mode, onClose, isOpen }: Props) => {
+export const AuthModal = ({
+  mode,
+  onClose,
+  isOpen,
+  onSwitchMode,
+  redirectTo,
+}: Props) => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -32,7 +43,7 @@ export const AuthModal = ({ mode, onClose, isOpen }: Props) => {
     mode: "onBlur",
   });
 
-  // Закриття по ESC
+  // ESC
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -41,7 +52,7 @@ export const AuthModal = ({ mode, onClose, isOpen }: Props) => {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
-  // Очистка форми при закритті
+  // reset при закритті
   useEffect(() => {
     if (!isOpen) reset();
   }, [isOpen, reset]);
@@ -53,20 +64,29 @@ export const AuthModal = ({ mode, onClose, isOpen }: Props) => {
       } else {
         await registerUser(data.email!, data.password!);
       }
+
       reset();
+
+      // 🔥 редірект після успіху
+      router.push(redirectTo || "/teachers");
       onClose();
     } catch (error) {
       console.error(error);
-      // Тут можна додати toast / повідомлення користувачу
     }
   };
 
   return (
-    <div className={`${styles.backdrop} ${isOpen ? styles.show : ""}`}
+    <div
+      className={`${styles.backdrop} ${isOpen ? styles.show : ""}`}
       onClick={onClose}
     >
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeBtn} onClick={onClose}>✖</button>
+      <div
+        className={styles.modal}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button className={styles.closeBtn} onClick={onClose}>
+          ✖
+        </button>
 
         <h2 className={styles.title}>
           {mode === "login" ? "Log In" : "Registration"}
@@ -74,8 +94,8 @@ export const AuthModal = ({ mode, onClose, isOpen }: Props) => {
 
         <p className={styles.text}>
           {mode === "login"
-            ? "Welcome back! Please enter your credentials to access your account."
-            : "Thank you for your interest! Please provide the information below to register."}
+            ? "Welcome back! Please enter your credentials."
+            : "Create your account below."}
         </p>
 
         <form
@@ -88,10 +108,16 @@ export const AuthModal = ({ mode, onClose, isOpen }: Props) => {
               <input
                 type="text"
                 placeholder="Name"
-                className={`${styles.input} ${errors.name ? styles.inputError : ""}`}
+                className={`${styles.input} ${
+                  errors.name ? styles.inputError : ""
+                }`}
                 {...register("name")}
               />
-              {errors.name && <p className={styles.error}>{errors.name.message}</p>}
+              {errors.name && (
+                <p className={styles.error}>
+                  {errors.name.message}
+                </p>
+              )}
             </div>
           )}
 
@@ -99,28 +125,65 @@ export const AuthModal = ({ mode, onClose, isOpen }: Props) => {
             <input
               type="email"
               placeholder="Email*"
-              autoComplete="new-email"
-              className={`${styles.input} ${errors.email ? styles.inputError : ""}`}
+              className={`${styles.input} ${
+                errors.email ? styles.inputError : ""
+              }`}
               {...register("email")}
             />
-            {errors.email && <p className={styles.error}>{errors.email.message}</p>}
+            {errors.email && (
+              <p className={styles.error}>
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           <div>
             <input
               type="password"
               placeholder="Password*"
-              autoComplete="new-password"
-              className={`${styles.input} ${errors.password ? styles.inputError : ""}`}
+              className={`${styles.input} ${
+                errors.password ? styles.inputError : ""
+              }`}
               {...register("password")}
             />
-            {errors.password && <p className={styles.error}>{errors.password.message}</p>}
+            {errors.password && (
+              <p className={styles.error}>
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           <button type="submit" className={styles.submitBtn}>
             {mode === "login" ? "Log In" : "Sign Up"}
           </button>
         </form>
+
+        {/* 🔥 ПЕРЕМИКАННЯ */}
+        <p className={styles.switchText}>
+          {mode === "login" ? (
+            <>
+              Don&apos;t have an account?{" "}
+              <button
+                type="button"
+                onClick={onSwitchMode}
+                className={styles.switchBtn}
+              >
+                Sign up
+              </button>
+            </>
+          ) : (
+            <>
+              Already have an account?{" "}
+              <button
+                type="button"
+                onClick={onSwitchMode}
+                className={styles.switchBtn}
+              >
+                Log in
+              </button>
+            </>
+          )}
+        </p>
       </div>
     </div>
   );

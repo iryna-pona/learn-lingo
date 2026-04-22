@@ -48,6 +48,29 @@ export const getTeachers = async (
   };
 };
 
+export const getTeachersByIds = async (
+  ids: string[]
+): Promise<(Teacher & { id: string })[]> => {
+  if (!ids.length) return [];
+
+  const snapshot = await get(ref(database, "teachers"));
+
+  if (!snapshot.exists()) return [];
+
+  const data = snapshot.val() as Record<string, Teacher>;
+
+  return ids
+    .map((id) => {
+      if (!data[id]) return null;
+
+      return {
+        ...data[id],
+        id,
+      };
+    })
+    .filter(Boolean) as (Teacher & { id: string })[];
+};
+
 export const addFavorite = async (userId: string, teacherId: string) => {
   await set(ref(database, `users/${userId}/favorites/${teacherId}`), true);
 };

@@ -1,34 +1,32 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getTeachers, addFavorite, removeFavorite, getFavorites } from "@/lib/firebase/db";
-import { onAuthStateChanged, getAuth, User } from "firebase/auth";
+import { getTeachers } from "@/lib/firebase/db";
+import { useFavoritesStore } from "@/store/favoritesStore";
+import { useAuth } from "@/hooks/useAuth";
 import { Teacher } from "@/types/teacher";
 import { TeacherCard } from "@/components/TeacherCard/TeacherCard";
+import { AuthModal } from "@/components/Modals/AuthModal";
 import styles from "./TeachersPage.module.css";
 
 export default function TeachersPage() {
   const [teachers, setTeachers] = useState<(Teacher & { id: string })[]>([]);
   const [lastKey, setLastKey] = useState<string | null>(null);
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const [user, setUser] = useState<User | null>(null);
-  const [favorites, setFavorites] = useState<string[]>([]);
+  
+  const { user } = useAuth();
+  const { favorites, toggleFavorite } = useFavoritesStore();
 
   const perPage = 4;
 
   useEffect(() => {
-  const auth = getAuth();
-
-  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
-
-  return () => unsubscribe();
-}, []);
+    if (user) {
+      setIsModalOpen(false);
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchFirst = async () => {
@@ -51,19 +49,16 @@ export default function TeachersPage() {
     fetchFirst();
   }, []);
 
-  useEffect(() => {   
-    if (!user) {
-      setFavorites([]);
-      return;
-    }
+  if (user === undefined) return null;
 
-    const fetchFavorites = async () => {
-      const favs = await getFavorites(user.uid);
-      setFavorites(favs);
-    };
+  const handleFavoriteClick = (id: string) => {
+  if (!user) {
+    setIsModalOpen(true);
+    return;
+  }
 
-    fetchFavorites();
-  }, [user]);
+  toggleFavorite(user.uid, id);
+};
 
   const loadMore = async () => {
     if (!lastKey) return;
@@ -84,25 +79,6 @@ export default function TeachersPage() {
     }
   };
 
-  const toggleFavorite = async (id: string) => {
-  if (!user) {
-    alert("This feature is available only for authorized users");
-    return;
-  }
-
-  try {
-    if (favorites.includes(id)) {
-      await removeFavorite(user.uid, id);
-      setFavorites(prev => prev.filter(f => f !== id));
-    } else {
-      await addFavorite(user.uid, id);
-      setFavorites(prev => [...prev, id]);
-    }
-  } catch (err) {
-    console.error(err);
-  }
-};
-
   if (loading) {
     return <p className={styles.message}>Loading...</p>;
   }
@@ -122,7 +98,7 @@ export default function TeachersPage() {
                 key={teacher.id}
                 teacher={teacher}
                 isFavorite={favorites.includes(teacher.id)}
-                onFavoriteClick={() => toggleFavorite(teacher.id)}
+                onFavoriteClick={() => handleFavoriteClick(teacher.id)}
               />
             ))}
           </div>
@@ -137,6 +113,11 @@ export default function TeachersPage() {
             </button>
           )}
 
+          <AuthModal
+            mode="login"
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
         </div>
       </div>
     </div>

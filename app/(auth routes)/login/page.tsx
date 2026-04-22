@@ -1,0 +1,34 @@
+"use client";
+
+import { useState } from "react";
+import { AuthModal } from "@/components/Modals/AuthModal";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect } from "react";
+
+export default function LoginPage() {
+  const [mode, setMode] = useState<"login" | "register">("login");
+  const { user } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
+
+  // якщо вже залогінений → назад
+  useEffect(() => {
+    if (user) {
+      router.push("/teachers");
+    }
+  }, [user, router]);
+
+  return (
+    <AuthModal
+      mode={mode}
+      isOpen={true}
+      onClose={() => router.push("/")}
+      onSwitchMode={() =>
+        setMode(mode === "login" ? "register" : "login")
+      }
+      redirectTo={redirect ?? undefined}
+    />
+  );
+}
