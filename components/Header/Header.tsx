@@ -63,7 +63,7 @@ export const Header = () => {
       </div>
       <div className={styles.actions}>
         {user ? (
-          <button onClick={handleLogout} className={styles.logoutBtn}>
+          <button onClick={handleLogout} className={styles.regBtn}>
             Logout
           </button>
         ) : (
