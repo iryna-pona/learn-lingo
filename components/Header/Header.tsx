@@ -5,15 +5,18 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { logoutUser } from "@/lib/firebase/auth";
+import { useFavoritesStore } from "@/store/favoritesStore";
 import styles from "./Header.module.css";
 
 export const Header = () => {
   const { user } = useAuth();
+  const { clearFavorites } = useFavoritesStore();
   const router = useRouter();
   const pathname = usePathname();
 
   const handleLogout = async () => {
     await logoutUser();
+    clearFavorites();
     router.push("/");
   };
 

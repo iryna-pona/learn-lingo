@@ -48,6 +48,19 @@ export const getTeachers = async (
   };
 };
 
+export const getTeacherById = async (
+  id: string
+): Promise<Teacher | null> => {
+  const snapshot = await get(ref(database, `teachers/${id}`));
+
+  if (!snapshot.exists()) return null;
+
+  return {
+    id,
+    ...snapshot.val(),
+  };
+};
+
 export const getTeachersByIds = async (
   ids: string[]
 ): Promise<(Teacher & { id: string })[]> => {

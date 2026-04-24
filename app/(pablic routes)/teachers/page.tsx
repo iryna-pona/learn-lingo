@@ -13,6 +13,7 @@ export default function TeachersPage() {
   const [teachers, setTeachers] = useState<(Teacher & { id: string })[]>([]);
   const [lastKey, setLastKey] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mode, setMode] = useState<"login" | "register">("login");
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -114,9 +115,12 @@ export default function TeachersPage() {
           )}
 
           <AuthModal
-            mode="login"
+            mode={mode}
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
+            onSwitchMode={() =>
+              setMode(mode === "login" ? "register" : "login")
+            }
           />
         </div>
       </div>

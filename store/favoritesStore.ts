@@ -11,6 +11,7 @@ interface FavoritesState {
   loadFavorites: (userId: string) => Promise<void>;
   toggleFavorite: (userId: string, teacherId: string) => Promise<void>;
   setTeachersCache: (teachers: (Teacher & { id: string })[]) => void;
+  clearFavorites: () => void;
 }
 
 export const useFavoritesStore = create<FavoritesState>((set, get) => ({
@@ -57,5 +58,9 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
         favorites: [...favorites, teacherId],
       });
     }
+  },
+
+  clearFavorites: () => {
+    set({ favorites: [], teachersCache: {} });
   },
 }));

@@ -74,7 +74,7 @@ export const AuthModal = ({
       console.error(error);
     }
   };
-
+console.log(onSwitchMode);
   return (
     <div
       className={`${styles.backdrop} ${isOpen ? styles.show : ""}`}
@@ -99,6 +99,7 @@ export const AuthModal = ({
         </p>
 
         <form
+          key={mode}
           onSubmit={handleSubmit(onSubmit)}
           className={styles.form}
           autoComplete="off"

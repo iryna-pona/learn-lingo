@@ -7,10 +7,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
 
 export default function LoginPage() {
-  const [mode, setMode] = useState<"login" | "register">("login");
   const { user } = useAuth();
   const router = useRouter();
+
   const searchParams = useSearchParams();
+  const [mode, setMode] = useState<"login" | "register">(
+    searchParams.get("mode") === "register" ? "register" : "login"
+  );
   const redirect = searchParams.get("redirect");
 
   // якщо вже залогінений → назад
