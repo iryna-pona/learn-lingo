@@ -4,30 +4,32 @@ import { useEffect, useState } from "react";
 import { getTeachers } from "@/lib/firebase/db";
 import { useFavoritesStore } from "@/store/favoritesStore";
 import { useAuth } from "@/hooks/useAuth";
+import { useModal } from "@/hooks/useModal";
 import { Teacher } from "@/types/teacher";
 import { TeacherCard } from "@/components/TeacherCard/TeacherCard";
-import { AuthModal } from "@/components/Modals/AuthModal";
+import { Modal } from "@/components/Modal/Modal";
+import { AuthForm } from "@/components/Forms/AuthForm";
 import styles from "./TeachersPage.module.css";
 
 export default function TeachersPage() {
   const [teachers, setTeachers] = useState<(Teacher & { id: string })[]>([]);
   const [lastKey, setLastKey] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [mode, setMode] = useState<"login" | "register">("login");
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
   
   const { user } = useAuth();
+  const { type, open, isOpen, close, switchAuth } = useModal();
   const { favorites, toggleFavorite } = useFavoritesStore();
 
   const perPage = 4;
 
   useEffect(() => {
     if (user) {
-      setIsModalOpen(false);
+      close();
     }
-  }, [user]);
+  }, [user, close]);
 
   useEffect(() => {
     const fetchFirst = async () => {
@@ -53,13 +55,13 @@ export default function TeachersPage() {
   if (user === undefined) return null;
 
   const handleFavoriteClick = (id: string) => {
-  if (!user) {
-    setIsModalOpen(true);
-    return;
-  }
+    if (!user) {
+      open("login");
+      return;
+    }
 
-  toggleFavorite(user.uid, id);
-};
+    toggleFavorite(user.uid, id);
+  };
 
   const loadMore = async () => {
     if (!lastKey) return;
@@ -114,14 +116,15 @@ export default function TeachersPage() {
             </button>
           )}
 
-          <AuthModal
-            mode={mode}
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onSwitchMode={() =>
-              setMode(mode === "login" ? "register" : "login")
-            }
-          />
+          <Modal isOpen={isOpen} onClose={close}>
+            {(type === "login" || type === "register") && (
+              <AuthForm
+                mode={type}
+                onSwitchMode={switchAuth}
+                onClose={close}
+              />
+           )}
+          </Modal>
         </div>
       </div>
     </div>

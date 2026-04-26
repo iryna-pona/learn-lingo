@@ -6,12 +6,10 @@ import { getTeachersByIds } from "@/lib/firebase/db";
 import { Teacher } from "@/types/teacher";
 import { TeacherCard } from "@/components/TeacherCard/TeacherCard";
 import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
 import styles from "./FavoritesPage.module.css";
 
 export default function FavoritesPage() {
   const { user } = useAuth();
-  const router = useRouter();
 
   const {
     favorites,
@@ -22,14 +20,6 @@ export default function FavoritesPage() {
 
   const [loading, setLoading] = useState(true);
 
-  // 🔥 редірект якщо не авторизований
-  useEffect(() => {
-    if (user === null) {
-      router.push("/login");
-    }
-  }, [user, router]);
-
-  // 🔥 завантаження викладачів
   useEffect(() => {
     const fetchFavorites = async () => {
       setLoading(true);
@@ -49,9 +39,8 @@ export default function FavoritesPage() {
     if (user) {
       fetchFavorites();
     }
-  }, [favorites, teachersCache, setTeachersCache, user]);
+  }, [favorites, user]);
 
-  // 📌 беремо дані напряму з кешу
   const favoriteTeachers = useMemo(() => {
     return favorites
       .map((id) => teachersCache[id])
@@ -64,30 +53,30 @@ export default function FavoritesPage() {
     toggleFavorite(user.uid, teacherId);
   };
 
-  // ⛔ поки user не відомий
   if (user === undefined) return null;
 
-  // ⛔ якщо не авторизований — нічого не рендеримо (йде редірект)
   if (!user) return null;
 
   return (
     <div className={styles.section}>
-      <h1>Favorites</h1>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Favorites</h1>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : favoriteTeachers.length === 0 ? (
-        <p>No favorite teachers yet</p>
-      ) : (
-        favoriteTeachers.map((teacher) => (
-          <TeacherCard
-            key={teacher.id}
-            teacher={teacher}
-            isFavorite={favorites.includes(teacher.id)}
-            onFavoriteClick={() => handleFavoriteClick(teacher.id)}
-          />
-        ))
-      )}
+        {loading ? (
+          <p>Loading...</p>
+        ) : favoriteTeachers.length === 0 ? (
+          <p className={styles.text}>No favorite teachers yet</p>
+        ) : (
+          favoriteTeachers.map((teacher) => (
+            <TeacherCard
+              key={teacher.id}
+              teacher={teacher}
+              isFavorite={favorites.includes(teacher.id)}
+              onFavoriteClick={() => handleFavoriteClick(teacher.id)}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 }
