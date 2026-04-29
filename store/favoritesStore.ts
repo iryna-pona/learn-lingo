@@ -1,66 +1,39 @@
 import { create } from "zustand";
-import { addFavorite, removeFavorite, getFavorites } from "@/lib/firebase/db";
-import { Teacher } from "@/types/teacher";
+import {
+  getFavorites,
+  addFavorite,
+  removeFavorite,
+} from "@/lib/api/favorites";
 
-interface FavoritesState {
+type Store = {
   favorites: string[];
-  isLoading: boolean;
-
-  teachersCache: Record<string, Teacher>;
-
   loadFavorites: (userId: string) => Promise<void>;
   toggleFavorite: (userId: string, teacherId: string) => Promise<void>;
-  setTeachersCache: (teachers: (Teacher & { id: string })[]) => void;
-  clearFavorites: () => void;
-}
+};
 
-export const useFavoritesStore = create<FavoritesState>((set, get) => ({
+export const useFavoritesStore = create<Store>((set, get) => ({
   favorites: [],
-  isLoading: false,
-  teachersCache: {},
-
-  setTeachersCache: (teachers) => {
-    const cache: Record<string, Teacher> = {};
-
-    teachers.forEach((t) => {
-      cache[t.id] = t;
-    });
-
-    set({ teachersCache: cache });
-  },
 
   loadFavorites: async (userId) => {
-    set({ isLoading: true });
-
-    const data = await getFavorites(userId);
-
-    set({
-      favorites: data,
-      isLoading: false,
-    });
+    const ids = await getFavorites(userId);
+    set({ favorites: ids });
   },
 
   toggleFavorite: async (userId, teacherId) => {
     const { favorites } = get();
 
-    const isExist = favorites.includes(teacherId);
+    const isFav = favorites.includes(teacherId);
 
-    if (isExist) {
+    if (isFav) {
       await removeFavorite(userId, teacherId);
-
       set({
         favorites: favorites.filter((id) => id !== teacherId),
       });
     } else {
       await addFavorite(userId, teacherId);
-
       set({
         favorites: [...favorites, teacherId],
       });
     }
-  },
-
-  clearFavorites: () => {
-    set({ favorites: [], teachersCache: {} });
   },
 }));
